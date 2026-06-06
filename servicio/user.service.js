@@ -1,15 +1,16 @@
-import User from '../modelo/User.js'
-import ModelFactory from '../modelo/DAO/modelFactory.js'
+import User from '../model/user/User.js'
+import ModelFactory from '../model/DAO/modelFactory.js'
 import config from '../config.js'
 import bcrypt from 'bcrypt'
 import { generateToken } from '../utils/jwt.js'
-
+import UpdateUser
+    from '../model/user/UpdateUser.js'
 class UserService {
-    #modelo = null
+    #model = null
 
     constructor() {
         const modo = config.MODO_PERSISTENCIA
-        this.#modelo = ModelFactory.get(modo)
+        this.#model = ModelFactory.get(modo)
     }
 
     createUser = async user => {
@@ -19,7 +20,7 @@ class UserService {
         newUser.validate()
 
         const existingUser =
-            await this.#modelo.findByEmail(
+            await this.#model.findByEmail(
                 newUser.email
             )
 
@@ -34,16 +35,17 @@ class UserService {
 
         newUser.password = hashedPassword
 
-        await this.#modelo.create(
+        await this.#model.create(
             newUser.toPersistence()
         )
 
         return newUser.toJSON()
     }
+
     loginUser = async (email, password) => {
 
         const user =
-            await this.#modelo.findByEmail(email)
+            await this.#model.findByEmail(email)
 
         if (!user) {
             throw new Error('Invalid credentials')
@@ -69,19 +71,58 @@ class UserService {
 
     getProfile = async id => {
 
-    const user =
-        await this.#modelo.findById(id)
+        const user =
+            await this.#model.findById(id)
 
-    if (!user) {
-        throw new Error('User not found')
+        if (!user) {
+            throw new Error('User not found')
+        }
+
+        return {
+            id: user._id,
+            name: user.name,
+            email: user.email
+        }
+
+
     }
 
-    return {
-        id: user._id,
-        name: user.name,
-        email: user.email
+    updateProfile = async (id, data) => {
+
+        UpdateUser.validate(data)
+
+        const user =
+            await this.#model.findById(id)
+
+        if (!user) {
+            throw new Error('User not found')
+        }
+
+        if (data.name) {
+            user.name = data.name
+        }
+
+        if (data.password) {
+            user.password =
+                await bcrypt.hash(
+                    data.password,
+                    10
+                )
+        }
+
+        const updatedUser =
+            await this.#model.updateUser(
+                id,
+                user
+            )
+
+        return {
+            id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email
+        }
     }
-}
+
 }
 
 export default UserService

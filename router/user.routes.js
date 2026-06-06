@@ -26,6 +26,11 @@ class Router {
             authMiddleware,
             this.#controller.getProfile
         )
+        router.put(
+            '/profile',
+            authMiddleware,
+            this.#controller.updateProfile
+        )
         return router
     }
 }

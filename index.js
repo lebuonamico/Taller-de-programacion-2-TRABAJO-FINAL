@@ -1,5 +1,5 @@
 import config from "./config.js"
-import CnxMongoDB from "./modelo/MongoDB.js"
+import CnxMongoDB from "./model/MongoDB.js"
 import Server from "./server.js"
 
 

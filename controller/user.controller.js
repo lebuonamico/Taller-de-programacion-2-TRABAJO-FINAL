@@ -54,26 +54,40 @@ class UserController {
 
     getProfile = async (req, res) => {
 
+        try {
+
+            const user =
+                await this.#service.getProfile(
+                    req.user.id
+                )
+
+            res.json(user)
+
+        }
+        catch (error) {
+
+            res.status(404).json({
+                error: error.message
+            })
+
+        }
+    }
+
+    updateProfile = async (req, res) => {
     try {
+        const updatedUser = await this.#service.updateProfile(
+            req.user.id,
+            req.body
+        )
 
-        const user =
-            await this.#service.getProfile(
-                req.user.id
-            )
-
-        res.json(user)
-
+        res.json(updatedUser)
     }
     catch(error) {
-
-        res.status(404).json({
+        res.status(400).json({
             error: error.message
         })
-
     }
 }
-
-
 }
 
 export default UserController

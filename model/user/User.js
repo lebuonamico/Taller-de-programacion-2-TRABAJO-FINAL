@@ -12,7 +12,8 @@ class User {
             name: Joi.string().min(2).max(50).required(),
             email: Joi.string().email().required(),
             password: Joi.string().min(8).required()
-        })
+        }).min(1)
+            .unknown(false)
 
         const { error } = schema.validate({
             name: this.name,
