@@ -3,8 +3,8 @@ import ModelFactory from '../model/DAO/modelFactory.js'
 import config from '../config.js'
 import bcrypt from 'bcrypt'
 import { generateToken } from '../utils/jwt.js'
-import UpdateUser
-    from '../model/user/UpdateUser.js'
+import UpdateUser from '../model/user/UpdateUser.js'
+
 class UserService {
     #model = null
 
@@ -13,7 +13,7 @@ class UserService {
         this.#model = ModelFactory.get(modo)
     }
 
-    createUser = async user => {
+    async createUser(user) {
 
         const newUser = new User(user)
 
@@ -27,6 +27,7 @@ class UserService {
         if (existingUser) {
             throw new Error('Email already exists')
         }
+
         const hashedPassword =
             await bcrypt.hash(
                 newUser.password,
@@ -42,7 +43,7 @@ class UserService {
         return newUser.toJSON()
     }
 
-    loginUser = async (email, password) => {
+    async loginUser(email, password) {
 
         const user =
             await this.#model.findByEmail(email)
@@ -69,7 +70,7 @@ class UserService {
         return { token }
     }
 
-    getProfile = async id => {
+    async getProfile(id) {
 
         const user =
             await this.#model.findById(id)
@@ -83,11 +84,9 @@ class UserService {
             name: user.name,
             email: user.email
         }
-
-
     }
 
-    updateProfile = async (id, data) => {
+    async updateProfile(id, data) {
 
         UpdateUser.validate(data)
 
@@ -123,6 +122,17 @@ class UserService {
         }
     }
 
+    async deleteProfile(id) {
+
+        const user =
+            await this.#model.findById(id)
+
+        if (!user) {
+            throw new Error('User not found')
+        }
+
+        await this.#model.deleteUser(id)
+    }
 }
 
 export default UserService

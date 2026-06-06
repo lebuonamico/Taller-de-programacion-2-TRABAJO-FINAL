@@ -55,6 +55,15 @@ class UsersMongoDB {
         return await this.findById(id)
     }
 
+    async deleteUser(id) {
+
+        return await CnxMongoDB.db
+            .collection('users')
+            .deleteOne({
+                _id: new ObjectId(id)
+            })
+    }
+
 }
 
 export default UsersMongoDB

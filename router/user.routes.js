@@ -31,6 +31,11 @@ class Router {
             authMiddleware,
             this.#controller.updateProfile
         )
+        router.delete(
+            '/profile',
+            authMiddleware,
+            this.#controller.deleteProfile
+        )
         return router
     }
 }
