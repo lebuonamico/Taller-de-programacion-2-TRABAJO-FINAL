@@ -34,6 +34,12 @@ const schemas = {
         limite: Joi.number().positive().required(),
         mes: Joi.number().integer().min(1).max(12).required(),
         anio: Joi.number().integer().min(2000).required()
+    }),
+
+    report: Joi.object({
+        email: Joi.string().email().optional(),
+        mes: Joi.number().integer().min(1).max(12).optional(),
+        anio: Joi.number().integer().min(2000).optional()
     })
 }
 

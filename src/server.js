@@ -4,6 +4,7 @@ import rutasCategoria from './router/categoria.routes.js'
 import rutasTransaccion from './router/transaccion.routes.js'
 import rutasPresupuesto from './router/presupuesto.routes.js'
 import rutasEstadisticas from './router/stats.routes.js'
+import rutasReporte from './router/reporte.routes.js'
 import errorMiddleware from './middleware/error.middleware.js'
 
 const createServer = () => {
@@ -18,6 +19,7 @@ const createServer = () => {
     app.use('/api/transactions', rutasTransaccion)
     app.use('/api/budgets', rutasPresupuesto)
     app.use('/api/stats', rutasEstadisticas)
+    app.use('/api/reports', rutasReporte)
 
     app.use(errorMiddleware)
 
