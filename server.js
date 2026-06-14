@@ -2,6 +2,7 @@ import express from 'express'
 import UserRouter from './router/user.routes.js'
 import TransaccionRouter from './router/transaccion.routes.js'
 import PresupuestoRouter from './router/presupuesto.routes.js'
+import CategoryRouter from './router/category.routes.js'
 
 
 class Server {
@@ -9,12 +10,14 @@ class Server {
     #userRouter = null
     #transaccionRouter = null
     #presupuestoRouter = null
+    #categoryRouter = null
 
     constructor(port) {
         this.#port = port
         this.#userRouter = new UserRouter().config()
         this.#transaccionRouter = new TransaccionRouter().config()
         this.#presupuestoRouter = new PresupuestoRouter().config()
+        this.#categoryRouter = new CategoryRouter().config()
     }
 
     start() {
@@ -29,6 +32,7 @@ class Server {
         app.use('/api/users', this.#userRouter)
         app.use('/api/transacciones', this.#transaccionRouter)
         app.use('/api/presupuestos', this.#presupuestoRouter)
+        app.use('/api/categories', this.#categoryRouter)
 
         const port = this.#port
         const server = app.listen(port, () => console.log(`Servidor ApiRestful escuchando en http://localhost:${port}`))
