@@ -1,11 +1,10 @@
-import config from "./config.js"
-import CnxMongoDB from "./modelo/MongoDB.js"
-import Server from "./server.js"
+import config from './src/config/index.js'
+import connectDB from './src/config/database.js'
+import createServer from './src/server.js'
 
+await connectDB()
 
-if(config.MODO_PERSISTENCIA == 'MONGODB') {
-    await CnxMongoDB.conectar()
-}
-
-const server = new Server(config.PORT)
-server.start()
+const app = createServer()
+app.listen(config.PORT, () => {
+    console.log(`Servidor ApiRestful escuchando en http://localhost:${config.PORT}`)
+})
