@@ -1,0 +1,141 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f7f7fb;
+    color: #333;
+}
+.container {
+    max-width: 520px;
+    margin: 3rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 18px 55px rgba(29, 41, 73, 0.08);
+}
+h1 {
+    margin-top: 0;
+    font-size: 1.9rem;
+    text-align: center;
+}
+.form {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+label {
+    font-weight: 600;
+}
+input,
+textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid #d4d7dd;
+    border-radius: 10px;
+    background: #fafbff;
+    outline: none;
+    font-size: 1rem;
+}
+button {
+    padding: 0.95rem 1rem;
+    border: none;
+    border-radius: 10px;
+    background: #4756ff;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+button:hover {
+    background: #303ed1;
+}
+.token-box {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 14px;
+    background: #eef4ff;
+    border: 1px solid #d5dcff;
+    display: grid;
+    gap: 0.75rem;
+}
+.token-box.hidden {
+    display: none;
+}
+.token-label {
+    font-weight: 700;
+    color: #28316d;
+}
+#tokenOutput {
+    width: 100%;
+    min-height: 6rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #c9d2ff;
+    border-radius: 12px;
+    background: #f8faff;
+    font-family: monospace;
+    font-size: 0.95rem;
+    color: #1f2d70;
+    resize: vertical;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+#copyTokenBtn {
+    justify-self: start;
+    padding: 0.75rem 1rem;
+    background: #1f3bcc;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+}
+#copyTokenBtn:hover {
+    background: #182ea7;
+}
+.message {
+    min-height: 3rem;
+    padding: 1rem;
+    border-radius: 10px;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+.message.success {
+    background: #eaf7ec;
+    color: #1d7a34;
+}
+.message.error {
+    background: #fbeaea;
+    color: #b02222;
+}
+.footer-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+a {
+    color: #4756ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+.menu {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.card {
+    display: block;
+    padding: 1rem 1.2rem;
+    border-radius: 14px;
+    background: #eef0ff;
+    color: #0a1b57;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 700;
+}
+.card:hover {
+    background: #dde1ff;
+}
