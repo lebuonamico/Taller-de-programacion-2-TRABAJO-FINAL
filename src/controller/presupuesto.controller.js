@@ -13,7 +13,10 @@ export const crearPresupuesto = async (req, res, next) => {
 
 export const obtenerPresupuestos = async (req, res, next) => {
     try {
-        const presupuestos = await servicio.obtenerPresupuestos(req.user.id, req.query)
+        const presupuestos = await servicio.obtenerPresupuestos(
+            req.user.id,
+            req.validated?.query ?? req.query
+        )
         res.json(presupuestos)
     } catch (error) {
         next(error)

@@ -1,6 +1,7 @@
 import ServicioEstadisticas from './stats.service.js'
 import { construirReporteHTML } from '../utils/reporteTemplate.js'
 import { enviarMail } from '../utils/mailer.js'
+import createHttpError from '../utils/http-error.js'
 
 class ServicioReporte {
 
@@ -22,13 +23,19 @@ class ServicioReporte {
         const html = construirReporteHTML({ periodo, mensuales, categorias, tendencias })
 
         const destinatario = email || emailUsuario
-        if (!destinatario) throw new Error('No se pudo determinar el destinatario del reporte')
+        if (!destinatario) throw createHttpError('No se pudo determinar el destinatario del reporte', 400)
 
-        const info = await enviarMail({
-            para: destinatario,
-            asunto: `Reporte financiero ${mesNum}/${anioNum}`,
-            html
-        })
+        let info
+
+        try {
+            info = await enviarMail({
+                para: destinatario,
+                asunto: `Reporte financiero ${mesNum}/${anioNum}`,
+                html
+            })
+        } catch (error) {
+            throw createHttpError(error.message || 'No se pudo enviar el reporte', 502)
+        }
 
         return {
             mensaje: 'Reporte enviado correctamente',

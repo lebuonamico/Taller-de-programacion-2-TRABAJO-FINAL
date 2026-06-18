@@ -13,12 +13,11 @@ const router = Router()
 
 router.use(authMiddleware)
 
-router.get('/', obtenerTransacciones)
-router.get('/:id', obtenerTransaccion)
+router.get('/', validate('transactionFilters', 'query'), obtenerTransacciones)
+router.get('/:id', validate('objectId', 'params'), obtenerTransaccion)
 router.post('/', validate('transaction'), crearTransaccion)
-router.put('/:id', actualizarTransaccion)
-router.delete('/:id', eliminarTransaccion)
+router.put('/:id', validate('objectId', 'params'), validate('transactionUpdate'), actualizarTransaccion)
+router.delete('/:id', validate('objectId', 'params'), eliminarTransaccion)
 
 export default router
-
 

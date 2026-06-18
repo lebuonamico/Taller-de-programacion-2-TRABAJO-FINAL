@@ -1,112 +1,55 @@
 import Service from '../service/user.service.js'
 
-
 class UserController {
     #service = null
 
     constructor() {
         this.#service = new Service()
     }
-    createUser = async (req, res) => {
 
+    createUser = async (req, res, next) => {
         try {
-
-            const user = req.body
-
-            const createdUser =
-                await this.#service.createUser(user)
-
+            const createdUser = await this.#service.createUser(req.body)
             res.status(201).json(createdUser)
-
-        }
-        catch (error) {
-
-            res.status(400).json({
-                error: error.message
-            })
-
+        } catch (error) {
+            next(error)
         }
     }
 
-    loginUser = async (req, res) => {
-
+    loginUser = async (req, res, next) => {
         try {
-
             const { email, password } = req.body
-
-            const user =
-                await this.#service.loginUser(
-                    email,
-                    password
-                )
-
+            const user = await this.#service.loginUser(email, password)
             res.json(user)
-
-        }
-        catch (error) {
-
-            res.status(401).json({
-                error: error.message
-            })
-
+        } catch (error) {
+            next(error)
         }
     }
 
-    getProfile = async (req, res) => {
-
+    getProfile = async (req, res, next) => {
         try {
-
-            const user =
-                await this.#service.getProfile(
-                    req.user.id
-                )
-
+            const user = await this.#service.getProfile(req.user.id)
             res.json(user)
-
-        }
-        catch (error) {
-
-            res.status(404).json({
-                error: error.message
-            })
-
+        } catch (error) {
+            next(error)
         }
     }
 
-    updateProfile = async (req, res) => {
+    updateProfile = async (req, res, next) => {
         try {
-            const updatedUser = await this.#service.updateProfile(
-                req.user.id,
-                req.body
-            )
-
+            const updatedUser = await this.#service.updateProfile(req.user.id, req.body)
             res.json(updatedUser)
-        }
-        catch (error) {
-            res.status(400).json({
-                error: error.message
-            })
+        } catch (error) {
+            next(error)
         }
     }
-    deleteProfile = async (req, res) => {
 
+    deleteProfile = async (req, res, next) => {
         try {
-
-            await this.#service.deleteProfile(
-                req.user.id
-            )
-
-            res.json({
-                message: 'User deleted successfully'
-            })
-
-        }
-        catch (error) {
-
-            res.status(404).json({
-                error: error.message
-            })
-
+            await this.#service.deleteProfile(req.user.id)
+            res.json({ message: 'User deleted successfully' })
+        } catch (error) {
+            next(error)
         }
     }
 }

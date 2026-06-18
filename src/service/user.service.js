@@ -1,6 +1,7 @@
 import UserModel from '../model/User.js'
 import bcrypt from 'bcrypt'
 import { generateToken } from '../utils/jwt.js'
+import createHttpError from '../utils/http-error.js'
 
 class UserService {
     async createUser(user) {
@@ -8,7 +9,7 @@ class UserService {
 
         const existingUser = await UserModel.findOne({ email })
         if (existingUser) {
-            throw new Error('Email already exists')
+            throw createHttpError('Email already exists', 409)
         }
 
         const hashed = await bcrypt.hash(password, 10)
@@ -24,12 +25,12 @@ class UserService {
     async loginUser(email, password) {
         const user = await UserModel.findOne({ email })
         if (!user) {
-            throw new Error('Invalid credentials')
+            throw createHttpError('Invalid credentials', 401)
         }
 
         const validPassword = await bcrypt.compare(password, user.password)
         if (!validPassword) {
-            throw new Error('Invalid credentials')
+            throw createHttpError('Invalid credentials', 401)
         }
 
         const token = generateToken({
@@ -43,7 +44,7 @@ class UserService {
     async getProfile(id) {
         const user = await UserModel.findById(id).lean()
         if (!user) {
-            throw new Error('User not found')
+            throw createHttpError('User not found', 404)
         }
 
         return {
@@ -56,7 +57,7 @@ class UserService {
     async updateProfile(id, data) {
         const user = await UserModel.findById(id)
         if (!user) {
-            throw new Error('User not found')
+            throw createHttpError('User not found', 404)
         }
 
         if (data.name) {
@@ -79,7 +80,7 @@ class UserService {
     async deleteProfile(id) {
         const user = await UserModel.findById(id)
         if (!user) {
-            throw new Error('User not found')
+            throw createHttpError('User not found', 404)
         }
 
         await UserModel.deleteOne({ _id: id })

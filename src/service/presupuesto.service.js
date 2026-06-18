@@ -1,8 +1,19 @@
 import Presupuesto from '../model/Presupuesto.js'
+import Categoria from '../model/Categoria.js'
+import createHttpError from '../utils/http-error.js'
 
 class ServicioPresupuesto {
 
+    async validarCategoria(categoriaId, idUsuario) {
+        const categoria = await Categoria.exists({ _id: categoriaId, user: idUsuario })
+        if (!categoria) {
+            throw createHttpError('Categoría no encontrada', 404)
+        }
+    }
+
     async crearPresupuesto(datos, idUsuario) {
+        await this.validarCategoria(datos.categoria, idUsuario)
+
         const presupuesto = await Presupuesto.create({
             categoria: datos.categoria,
             limite: datos.limite,
@@ -27,7 +38,11 @@ class ServicioPresupuesto {
 
     async actualizarPresupuesto(id, datos, idUsuario) {
         const presupuesto = await Presupuesto.findOne({ _id: id, user: idUsuario })
-        if (!presupuesto) throw new Error('Presupuesto no encontrado')
+        if (!presupuesto) throw createHttpError('Presupuesto no encontrado', 404)
+
+        if (datos.categoria !== undefined) {
+            await this.validarCategoria(datos.categoria, idUsuario)
+        }
 
         if (datos.limite !== undefined) presupuesto.limite = datos.limite
         if (datos.categoria !== undefined) presupuesto.categoria = datos.categoria
@@ -40,7 +55,7 @@ class ServicioPresupuesto {
 
     async eliminarPresupuesto(id, idUsuario) {
         const presupuesto = await Presupuesto.findOneAndDelete({ _id: id, user: idUsuario })
-        if (!presupuesto) throw new Error('Presupuesto no encontrado')
+        if (!presupuesto) throw createHttpError('Presupuesto no encontrado', 404)
     }
 }
 

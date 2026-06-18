@@ -9,8 +9,7 @@ router.use(authMiddleware)
 
 router.get('/', obtenerCategorias)
 router.post('/', validate('category'), crearCategoria)
-router.put('/:id', validate('category'), actualizarCategoria)
-router.delete('/:id', eliminarCategoria)
+router.put('/:id', validate('objectId', 'params'), validate('categoryUpdate'), actualizarCategoria)
+router.delete('/:id', validate('objectId', 'params'), eliminarCategoria)
 
 export default router
-

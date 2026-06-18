@@ -12,11 +12,10 @@ const router = Router()
 
 router.use(authMiddleware)
 
-router.get('/', obtenerPresupuestos)
+router.get('/', validate('budgetFilters', 'query'), obtenerPresupuestos)
 router.post('/', validate('budget'), crearPresupuesto)
-router.put('/:id', actualizarPresupuesto)
-router.delete('/:id', eliminarPresupuesto)
+router.put('/:id', validate('objectId', 'params'), validate('budgetUpdate'), actualizarPresupuesto)
+router.delete('/:id', validate('objectId', 'params'), eliminarPresupuesto)
 
 export default router
-
 

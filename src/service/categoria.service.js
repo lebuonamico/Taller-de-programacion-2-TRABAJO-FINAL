@@ -1,4 +1,5 @@
 import Categoria from '../model/Categoria.js'
+import createHttpError from '../utils/http-error.js'
 
 class ServicioCategoria {
 
@@ -17,7 +18,7 @@ class ServicioCategoria {
 
     async actualizarCategoria(idUsuario, id, datos) {
         const categoria = await Categoria.findOne({ _id: id, user: idUsuario })
-        if (!categoria) throw new Error('Categoría no encontrada')
+        if (!categoria) throw createHttpError('Categoría no encontrada', 404)
 
         categoria.name = datos.name ?? categoria.name
         categoria.description = datos.description ?? categoria.description
@@ -28,7 +29,7 @@ class ServicioCategoria {
 
     async eliminarCategoria(idUsuario, id) {
         const categoria = await Categoria.findOneAndDelete({ _id: id, user: idUsuario })
-        if (!categoria) throw new Error('Categoría no encontrada')
+        if (!categoria) throw createHttpError('Categoría no encontrada', 404)
         return { mensaje: 'Categoría eliminada correctamente' }
     }
 }

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import Transaccion from '../model/Transaccion.js'
+import createHttpError from '../utils/http-error.js'
 
 class ServicioEstadisticas {
 
@@ -8,6 +9,14 @@ class ServicioEstadisticas {
     async obtenerEstadisticasMensuales(idUsuario, mes, anio) {
         const mesNum = parseInt(mes, 10)
         const anioNum = parseInt(anio, 10)
+
+        if (!Number.isInteger(mesNum) || mesNum < 1 || mesNum > 12) {
+            throw createHttpError('El mes debe estar entre 1 y 12', 400)
+        }
+
+        if (!Number.isInteger(anioNum) || anioNum < 2000) {
+            throw createHttpError('El año debe ser válido', 400)
+        }
 
         const desde = new Date(anioNum, mesNum - 1, 1)
         const hasta = new Date(anioNum, mesNum, 1)
@@ -79,6 +88,15 @@ class ServicioEstadisticas {
         if (mes && anio) {
             const mesNum = parseInt(mes, 10)
             const anioNum = parseInt(anio, 10)
+
+            if (!Number.isInteger(mesNum) || mesNum < 1 || mesNum > 12) {
+                throw createHttpError('El mes debe estar entre 1 y 12', 400)
+            }
+
+            if (!Number.isInteger(anioNum) || anioNum < 2000) {
+                throw createHttpError('El año debe ser válido', 400)
+            }
+
             filtro.fecha = {
                 $gte: new Date(anioNum, mesNum - 1, 1),
                 $lt: new Date(anioNum, mesNum, 1)
@@ -144,6 +162,11 @@ class ServicioEstadisticas {
     // Compara los últimos N meses: calcula evolución de ingresos y gastos mes a mes
     async obtenerTendencias(idUsuario, meses = 6) {
         const cantMeses = Math.min(parseInt(meses, 10) || 6, 24)
+
+        if (cantMeses < 1) {
+            throw createHttpError('La cantidad de meses debe ser mayor a 0', 400)
+        }
+
         const desde = new Date()
         desde.setMonth(desde.getMonth() - cantMeses)
         desde.setDate(1)
@@ -226,7 +249,7 @@ class ServicioEstadisticas {
         })
 
         const ultimo = tendencias.at(-1)
-        const tendenciaGeneral = !ultimo?.variacionGastos
+        const tendenciaGeneral = ultimo?.variacionGastos == null
             ? 'sin datos suficientes'
             : ultimo.variacionGastos > 5
                 ? 'gastos en aumento'

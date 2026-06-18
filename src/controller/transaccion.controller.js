@@ -13,7 +13,10 @@ export const crearTransaccion = async (req, res, next) => {
 
 export const obtenerTransacciones = async (req, res, next) => {
     try {
-        const transacciones = await servicio.obtenerTransacciones(req.user.id, req.query)
+        const transacciones = await servicio.obtenerTransacciones(
+            req.user.id,
+            req.validated?.query ?? req.query
+        )
         res.json(transacciones)
     } catch (error) {
         next(error)

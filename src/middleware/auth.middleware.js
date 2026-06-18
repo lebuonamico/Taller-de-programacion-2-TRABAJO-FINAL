@@ -1,19 +1,32 @@
 import { verifyToken } from '../utils/jwt.js'
+import createHttpError from '../utils/http-error.js'
 
 const authMiddleware = (req, res, next) => {
+    let decoded
+
     try {
         const authHeader = req.headers.authorization
         if (!authHeader) {
-            return res.status(401).json({ error: 'Token required' })
+            return next(createHttpError('Token requerido', 401))
         }
 
-        const token = authHeader.split(' ')[1]
-        const decoded = verifyToken(token)
-        req.user = decoded
-        next()
+        const match = authHeader.match(/^Bearer\s+(\S+)$/i)
+        if (!match) {
+            return next(createHttpError('Formato de autorización inválido', 401))
+        }
+
+        const token = match[1]
+        decoded = verifyToken(token)
+
+        if (!decoded?.id || !/^[a-fA-F0-9]{24}$/.test(String(decoded.id))) {
+            return next(createHttpError('Token inválido o vencido', 401))
+        }
     } catch (error) {
-        return res.status(401).json({ error: 'Invalid token' })
+        return next(createHttpError('Token inválido o vencido', 401))
     }
+
+    req.user = decoded
+    next()
 }
 
 export default authMiddleware
