@@ -18,13 +18,9 @@ class ServicioEstadisticas {
             throw createHttpError('El año debe ser válido', 400)
         }
 
-        const desde = new Date(anioNum, mesNum - 1, 1)
-        const hasta = new Date(anioNum, mesNum, 1)
+        const desde = new Date(Date.UTC(anioNum, mesNum - 1, 1))
+        const hasta = new Date(Date.UTC(anioNum, mesNum, 1))
 
-        // Pipeline:
-        // 1. $match  — filtra por usuario y rango de fechas
-        // 2. $group  — agrupa por tipo (ingreso/gasto) y suma los montos
-        // 3. $group  — segundo group para pivotear los dos tipos en un solo doc
         const resultado = await Transaccion.aggregate([
             {
                 $match: {
@@ -98,8 +94,8 @@ class ServicioEstadisticas {
             }
 
             filtro.fecha = {
-                $gte: new Date(anioNum, mesNum - 1, 1),
-                $lt: new Date(anioNum, mesNum, 1)
+                $gte: new Date(Date.UTC(anioNum, mesNum - 1, 1)),
+                $lt: new Date(Date.UTC(anioNum, mesNum, 1))
             }
         }
 

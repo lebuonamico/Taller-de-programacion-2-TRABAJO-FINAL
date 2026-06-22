@@ -15,6 +15,7 @@ const schemas = {
 
     updateUser: Joi.object({
         name: Joi.string().min(2).max(50),
+        email: Joi.string().email(),
         password: Joi.string().min(8)
     }).min(1),
 

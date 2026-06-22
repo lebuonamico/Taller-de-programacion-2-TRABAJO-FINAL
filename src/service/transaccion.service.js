@@ -34,8 +34,8 @@ class ServicioTransaccion {
             const mes = parseInt(filtros.mes, 10)
             const anio = filtros.anio ? parseInt(filtros.anio, 10) : new Date().getFullYear()
             consulta.fecha = {
-                $gte: new Date(anio, mes - 1, 1),
-                $lt: new Date(anio, mes, 1)
+                $gte: new Date(Date.UTC(anio, mes - 1, 1)),
+                $lt: new Date(Date.UTC(anio, mes, 1))
             }
         }
 

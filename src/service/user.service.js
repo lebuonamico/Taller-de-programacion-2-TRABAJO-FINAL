@@ -1,4 +1,7 @@
 import UserModel from '../model/User.js'
+import Transaccion from '../model/Transaccion.js'
+import Categoria from '../model/Categoria.js'
+import Presupuesto from '../model/Presupuesto.js'
 import bcrypt from 'bcrypt'
 import { generateToken } from '../utils/jwt.js'
 import createHttpError from '../utils/http-error.js'
@@ -9,7 +12,7 @@ class UserService {
 
         const existingUser = await UserModel.findOne({ email })
         if (existingUser) {
-            throw createHttpError('Email already exists', 409)
+            throw createHttpError('El email ya está registrado', 409)
         }
 
         const hashed = await bcrypt.hash(password, 10)
@@ -25,12 +28,12 @@ class UserService {
     async loginUser(email, password) {
         const user = await UserModel.findOne({ email })
         if (!user) {
-            throw createHttpError('Invalid credentials', 401)
+            throw createHttpError('Credenciales inválidas', 401)
         }
 
         const validPassword = await bcrypt.compare(password, user.password)
         if (!validPassword) {
-            throw createHttpError('Invalid credentials', 401)
+            throw createHttpError('Credenciales inválidas', 401)
         }
 
         const token = generateToken({
@@ -44,7 +47,7 @@ class UserService {
     async getProfile(id) {
         const user = await UserModel.findById(id).lean()
         if (!user) {
-            throw createHttpError('User not found', 404)
+            throw createHttpError('Usuario no encontrado', 404)
         }
 
         return {
@@ -57,11 +60,19 @@ class UserService {
     async updateProfile(id, data) {
         const user = await UserModel.findById(id)
         if (!user) {
-            throw createHttpError('User not found', 404)
+            throw createHttpError('Usuario no encontrado', 404)
         }
 
         if (data.name) {
             user.name = data.name
+        }
+
+        if (data.email) {
+            const existingUser = await UserModel.findOne({ email: data.email })
+            if (existingUser && existingUser._id.toString() !== id) {
+                throw createHttpError('El email ya está registrado', 409)
+            }
+            user.email = data.email
         }
 
         if (data.password) {
@@ -80,8 +91,14 @@ class UserService {
     async deleteProfile(id) {
         const user = await UserModel.findById(id)
         if (!user) {
-            throw createHttpError('User not found', 404)
+            throw createHttpError('Usuario no encontrado', 404)
         }
+
+        await Promise.all([
+            Transaccion.deleteMany({ user: id }),
+            Categoria.deleteMany({ user: id }),
+            Presupuesto.deleteMany({ user: id })
+        ])
 
         await UserModel.deleteOne({ _id: id })
     }

@@ -44,7 +44,7 @@ const swaggerSpec = {
             ConflictResponse: {
                 type: 'object',
                 properties: {
-                    error: { type: 'string', example: 'Email already exists' }
+                    error: { type: 'string', example: 'El email ya está registrado' }
                 }
             },
             RegisterInput: {
@@ -421,7 +421,7 @@ const swaggerSpec = {
                             'application/json': {
                                 schema: {
                                     type: 'object',
-                                    properties: { message: { type: 'string', example: 'User deleted successfully' } }
+                                    properties: { mensaje: { type: 'string', example: 'Usuario eliminado correctamente' } }
                                 }
                             }
                         }

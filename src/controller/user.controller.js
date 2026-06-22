@@ -47,7 +47,7 @@ class UserController {
     deleteProfile = async (req, res, next) => {
         try {
             await this.#service.deleteProfile(req.user.id)
-            res.json({ message: 'User deleted successfully' })
+            res.json({ mensaje: 'Usuario eliminado correctamente' })
         } catch (error) {
             next(error)
         }
