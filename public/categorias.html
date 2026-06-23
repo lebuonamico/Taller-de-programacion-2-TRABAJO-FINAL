@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="container wide">
+        <div class="page-header">
+            <div>
+                <h1>Categorías</h1>
+                <p class="subtitle">Organizá tus ingresos y gastos por categoría.</p>
+            </div>
+            <a href="index.html">Volver al inicio</a>
+        </div>
+
+        <div class="token-bar">
+            <input type="text" id="tokenInput" placeholder="Pegá tu token de sesión">
+            <button type="button" id="saveTokenBtn">Guardar token</button>
+            <div id="tokenStatus" class="token-status off"></div>
+        </div>
+
+        <section class="panel">
+            <h2>Nueva categoría</h2>
+            <form id="categoriaForm" class="form">
+                <input type="hidden" id="categoriaId">
+                <div class="field">
+                    <label for="catName">Nombre</label>
+                    <input type="text" id="catName" minlength="2" maxlength="50" required>
+                </div>
+                <div class="field">
+                    <label for="catDescription">Descripción (opcional)</label>
+                    <input type="text" id="catDescription" maxlength="200">
+                </div>
+                <div class="footer-links">
+                    <button type="submit" id="catSubmit">Crear categoría</button>
+                    <button type="button" id="catCancel" class="btn-secondary hidden">Cancelar edición</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Mis categorías</h2>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr>
+                </thead>
+                <tbody id="categoriasBody">
+                    <tr><td colspan="3" class="empty">Guardá tu token para ver tus categorías.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div id="message" class="message"></div>
+    </main>
+    <script src="js/finanzas.js"></script>
+</body>
+</html>

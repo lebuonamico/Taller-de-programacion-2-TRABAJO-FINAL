@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transacciones</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="container wide">
+        <div class="page-header">
+            <div>
+                <h1>Transacciones</h1>
+                <p class="subtitle">Registrá ingresos y gastos asociados a tus categorías.</p>
+            </div>
+            <a href="index.html">Volver al inicio</a>
+        </div>
+
+        <div class="token-bar">
+            <input type="text" id="tokenInput" placeholder="Pegá tu token de sesión">
+            <button type="button" id="saveTokenBtn">Guardar token</button>
+            <div id="tokenStatus" class="token-status off"></div>
+        </div>
+
+        <section class="panel">
+            <h2>Nueva transacción</h2>
+            <form id="transaccionForm" class="form inline">
+                <input type="hidden" id="transaccionId">
+                <div class="field">
+                    <label for="txTipo">Tipo</label>
+                    <select id="txTipo" required>
+                        <option value="ingreso">Ingreso</option>
+                        <option value="gasto">Gasto</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="txMonto">Monto</label>
+                    <input type="number" id="txMonto" min="0.01" step="0.01" required>
+                </div>
+                <div class="field">
+                    <label for="txCategoria">Categoría</label>
+                    <select id="txCategoria" required>
+                        <option value="">Elegí una categoría</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="txFecha">Fecha</label>
+                    <input type="date" id="txFecha" required>
+                </div>
+                <div class="field">
+                    <label for="txDescripcion">Descripción (opcional)</label>
+                    <input type="text" id="txDescripcion" maxlength="200">
+                </div>
+                <div class="footer-links">
+                    <button type="submit" id="txSubmit">Registrar transacción</button>
+                    <button type="button" id="txCancel" class="btn-secondary hidden">Cancelar edición</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Filtros</h2>
+            <form id="filtrosForm" class="form inline">
+                <div class="field">
+                    <label for="fTipo">Tipo</label>
+                    <select id="fTipo">
+                        <option value="">Todos</option>
+                        <option value="ingreso">Ingreso</option>
+                        <option value="gasto">Gasto</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="fCategoria">Categoría</label>
+                    <select id="fCategoria"><option value="">Todas</option></select>
+                </div>
+                <div class="field">
+                    <label for="fMes">Mes</label>
+                    <input type="number" id="fMes" min="1" max="12" placeholder="1-12">
+                </div>
+                <div class="field">
+                    <label for="fAnio">Año</label>
+                    <input type="number" id="fAnio" min="2000" placeholder="2026">
+                </div>
+                <div class="field">
+                    <label for="fOrden">Orden</label>
+                    <select id="fOrden">
+                        <option value="desc">Más recientes</option>
+                        <option value="asc">Más antiguas</option>
+                    </select>
+                </div>
+                <div class="footer-links">
+                    <button type="submit">Aplicar filtros</button>
+                    <button type="reset" class="btn-secondary">Limpiar</button>
+                </div>
+            </form>
+            <div id="filtroMsg" class="message"></div>
+        </section>
+
+        <section class="panel">
+            <h2>Movimientos</h2>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Descripción</th><th class="num">Monto</th><th>Acciones</th></tr>
+                </thead>
+                <tbody id="transaccionesBody">
+                    <tr><td colspan="6" class="empty">Guardá tu token para ver tus transacciones.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div id="message" class="message"></div>
+    </main>
+    <script src="js/finanzas.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Usuario</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Actualizar usuario</h1>
+        <form id="updateForm" class="form">
+            <label for="token">Token</label>
+            <textarea id="token" name="token" rows="3" required></textarea>
+
+            <label for="name">Nuevo nombre</label>
+            <input type="text" id="name" name="name" placeholder="Enviar solo si desea cambiarlo">
+
+            <label for="password">Nueva contraseña</label>
+            <input type="password" id="password" name="password" placeholder="Enviar solo si desea cambiarla">
+
+            <button type="submit">Actualizar</button>
+        </form>
+        <div id="message" class="message"></div>
+        <div class="footer-links">
+            <a href="index.html">Volver al inicio</a>
+        </div>
+    </main>
+    <script src="js/user-actions.js"></script>
+</body>
+</html>
