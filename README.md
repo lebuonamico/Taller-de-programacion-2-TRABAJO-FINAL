@@ -18,7 +18,7 @@ Aplicación de gestión de finanzas personales construida como **API REST** con 
 - **Manejo de errores centralizado** y respuesta 404 para rutas inexistentes.
 - **Documentación interactiva** con Swagger / OpenAPI.
 - **Frontend** en `public/` (HTML/CSS/JS) para interactuar con la API.
-- **Tests** con el test runner nativo de Node, `chai` y `sinon`y `mocha`
+- **Tests** con el test runner nativo de Node, `chai`, `sinon` y `mocha`
 
 ---
 
@@ -34,7 +34,7 @@ Aplicación de gestión de finanzas personales construida como **API REST** con 
 | Email            | Nodemailer                                              |
 | Documentación    | swagger-jsdoc + swagger-ui-express                      |
 | Testing          | `node --test`, Mocha, Chai, Sinon, Supertest           |
-| Utilidades       | dotenv, axios, @faker-js/faker                          |
+| Utilidades       | dotenv, axios                                           |
 
 ---
 
@@ -126,7 +126,6 @@ Servidor ApiRestful escuchando en http://localhost:8080
 │   ├── docs/openapi.js       # Especificación Swagger/OpenAPI
 │   └── test/                 # Tests
 ├── public/                   # Frontend estático (HTML, CSS, JS)
-├── postman/                  # Colección y environment de Postman
 └── .env.example              # Plantilla de variables de entorno
 ```
 
@@ -216,27 +215,6 @@ Authorization: Bearer <token>
 | ------ | -------- | :--: | ---------------------------------------------------- |
 | POST   | `/send`  |  ✓   | Envía un reporte financiero por email (`email`, `mes`, `anio` opcionales) |
 
----
-
-## Ejemplo de uso rápido
-
-```bash
-# 1. Registrarse
-curl -X POST http://localhost:8080/api/users/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Ada","email":"ada@example.com","password":"password123"}'
-
-# 2. Login → devuelve { "token": "..." }
-curl -X POST http://localhost:8080/api/users/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"ada@example.com","password":"password123"}'
-
-# 3. Crear una categoría (usando el token)
-curl -X POST http://localhost:8080/api/categories \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <TOKEN>" \
-  -d '{"name":"Comida","description":"Gastos en alimentos"}'
-```
 
 ---
 
@@ -254,15 +232,9 @@ El test de estadísticas usa `sinon` para *stubbear* `Transaction.aggregate`, de
 
 ---
 
-## Documentación con Postman
-
-En la carpeta [`postman/`](postman/) hay una colección y un environment listos para importar. Ver [postman/README.md](postman/README.md) para el detalle de uso y el orden de ejecución sugerido.
-
----
-
 ## Frontend
 
-El servidor sirve archivos estáticos desde `public/`. Las pantallas disponibles incluyen registro, login, perfil, categorías, transacciones, presupuestos, estadísticas y reportes. Se accede simplemente abriendo http://localhost:8080 con el servidor corriendo.
+El servidor sirve archivos desde `public/`. Las pantallas disponibles incluyen registro, login, perfil, categorías, transacciones, presupuestos, estadísticas y reportes. Se accede simplemente abriendo http://localhost:8080 con el servidor corriendo.
 
 ---
 
