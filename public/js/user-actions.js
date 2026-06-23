@@ -55,7 +55,9 @@ const handleLogin = async event => {
             body: JSON.stringify({ email, password })
         })
         hideToken()
-        showMessage('Inicio de sesión exitoso', 'success')
+        // Guardamos el token para que las pantallas de finanzas lo reutilicen.
+        localStorage.setItem('finanzas_token', data.token)
+        showMessage('Inicio de sesión exitoso. Tu token quedó guardado para las pantallas de finanzas.', 'success')
         showToken(data.token)
     } catch (error) {
         hideToken()

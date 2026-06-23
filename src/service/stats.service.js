@@ -1,6 +1,14 @@
 import mongoose from 'mongoose'
 import Transaccion from '../model/Transaccion.js'
+import Presupuesto from '../model/Presupuesto.js'
 import createHttpError from '../utils/http-error.js'
+
+// Clasifica el consumo de un presupuesto según el porcentaje gastado.
+const calcularEstado = porcentaje => {
+    if (porcentaje > 100) return 'excedido'
+    if (porcentaje >= 80) return 'alerta'
+    return 'ok'
+}
 
 class ServicioEstadisticas {
 
@@ -257,6 +265,88 @@ class ServicioEstadisticas {
             periodoAnalizado: `últimos ${cantMeses} meses`,
             tendenciaGeneral,
             meses: tendencias
+        }
+    }
+
+    // GET /stats/budgets?mes=6&anio=2026
+    // Cruza cada presupuesto del período con el gasto real de su categoría y
+    // calcula cuánto resta de cada límite (y el agregado del mes).
+    async obtenerEstadisticasPresupuestos(idUsuario, mes, anio) {
+        const mesNum = parseInt(mes, 10)
+        const anioNum = parseInt(anio, 10)
+
+        if (!Number.isInteger(mesNum) || mesNum < 1 || mesNum > 12) {
+            throw createHttpError('El mes debe estar entre 1 y 12', 400)
+        }
+
+        if (!Number.isInteger(anioNum) || anioNum < 2000) {
+            throw createHttpError('El año debe ser válido', 400)
+        }
+
+        const desde = new Date(Date.UTC(anioNum, mesNum - 1, 1))
+        const hasta = new Date(Date.UTC(anioNum, mesNum, 1))
+
+        // Presupuestos definidos para ese mes/año, con el nombre de su categoría.
+        const presupuestos = await Presupuesto.find({ user: idUsuario, mes: mesNum, anio: anioNum })
+            .populate('categoria', 'name')
+            .lean()
+
+        if (!presupuestos.length) {
+            return {
+                periodo: { mes: mesNum, anio: anioNum },
+                totales: { limite: 0, gastado: 0, restante: 0, porcentaje: 0 },
+                presupuestos: []
+            }
+        }
+
+        // Gasto real del período agrupado por categoría (una sola consulta).
+        const gastos = await Transaccion.aggregate([
+            {
+                $match: {
+                    user: new mongoose.Types.ObjectId(idUsuario),
+                    tipo: 'gasto',
+                    fecha: { $gte: desde, $lt: hasta }
+                }
+            },
+            { $group: { _id: '$categoria', gastado: { $sum: '$monto' } } }
+        ])
+
+        const gastoPorCategoria = new Map(gastos.map(g => [String(g._id), g.gastado]))
+
+        const detalle = presupuestos.map(p => {
+            const categoriaId = p.categoria?._id ?? p.categoria
+            const gastado = gastoPorCategoria.get(String(categoriaId)) ?? 0
+            const restante = parseFloat((p.limite - gastado).toFixed(2))
+            const porcentaje = p.limite > 0
+                ? parseFloat(((gastado / p.limite) * 100).toFixed(2))
+                : 0
+
+            return {
+                presupuestoId: p._id,
+                categoria: { id: categoriaId, nombre: p.categoria?.name ?? '—' },
+                limite: p.limite,
+                gastado,
+                restante,
+                porcentaje,
+                estado: calcularEstado(porcentaje)
+            }
+        })
+
+        const limiteTotal = detalle.reduce((acc, d) => acc + d.limite, 0)
+        const gastadoTotal = detalle.reduce((acc, d) => acc + d.gastado, 0)
+        const porcentajeTotal = limiteTotal > 0
+            ? parseFloat(((gastadoTotal / limiteTotal) * 100).toFixed(2))
+            : 0
+
+        return {
+            periodo: { mes: mesNum, anio: anioNum },
+            totales: {
+                limite: limiteTotal,
+                gastado: gastadoTotal,
+                restante: parseFloat((limiteTotal - gastadoTotal).toFixed(2)),
+                porcentaje: porcentajeTotal
+            },
+            presupuestos: detalle
         }
     }
 }

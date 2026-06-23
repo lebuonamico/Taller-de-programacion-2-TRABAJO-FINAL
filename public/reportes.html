@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1>Reportes</h1>
+                <p class="subtitle">Enviá por email un reporte financiero del período.</p>
+            </div>
+            <a href="index.html">Volver al inicio</a>
+        </div>
+
+        <div class="token-bar">
+            <input type="text" id="tokenInput" placeholder="Pegá tu token de sesión">
+            <button type="button" id="saveTokenBtn">Guardar token</button>
+            <div id="tokenStatus" class="token-status off"></div>
+        </div>
+
+        <section class="panel">
+            <h2>Enviar reporte</h2>
+            <form id="reporteForm" class="form">
+                <div class="field">
+                    <label for="rpEmail">Email destino (opcional)</label>
+                    <input type="email" id="rpEmail" placeholder="Por defecto, el de tu cuenta">
+                </div>
+                <div class="field">
+                    <label for="rpMes">Mes (opcional)</label>
+                    <input type="number" id="rpMes" min="1" max="12" placeholder="Mes actual">
+                </div>
+                <div class="field">
+                    <label for="rpAnio">Año (opcional)</label>
+                    <input type="number" id="rpAnio" min="2000" placeholder="Año actual">
+                </div>
+                <button type="submit">Enviar reporte</button>
+            </form>
+            <div id="reporteResultado" class="token-box hidden"></div>
+        </section>
+
+        <div id="message" class="message"></div>
+    </main>
+    <script src="js/finanzas.js"></script>
+</body>
+</html>

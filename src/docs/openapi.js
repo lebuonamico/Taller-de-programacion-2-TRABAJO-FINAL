@@ -290,6 +290,48 @@ const swaggerSpec = {
                     }
                 }
             },
+            BudgetStats: {
+                type: 'object',
+                properties: {
+                    periodo: {
+                        type: 'object',
+                        properties: {
+                            mes: { type: 'integer', example: 6 },
+                            anio: { type: 'integer', example: 2026 }
+                        }
+                    },
+                    totales: {
+                        type: 'object',
+                        properties: {
+                            limite: { type: 'number', example: 600000 },
+                            gastado: { type: 'number', example: 940000 },
+                            restante: { type: 'number', example: -340000 },
+                            porcentaje: { type: 'number', example: 156.67 }
+                        }
+                    },
+                    presupuestos: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            properties: {
+                                presupuestoId: { type: 'string', example: '664d5d6d7f1d2f3a4b5c6d72' },
+                                categoria: {
+                                    type: 'object',
+                                    properties: {
+                                        id: { type: 'string', example: '664d5d6d7f1d2f3a4b5c6d70' },
+                                        nombre: { type: 'string', example: 'IA' }
+                                    }
+                                },
+                                limite: { type: 'number', example: 500000 },
+                                gastado: { type: 'number', example: 900000 },
+                                restante: { type: 'number', example: -400000 },
+                                porcentaje: { type: 'number', example: 180 },
+                                estado: { type: 'string', enum: ['ok', 'alerta', 'excedido'], example: 'excedido' }
+                            }
+                        }
+                    }
+                }
+            },
             ReportSendInput: {
                 type: 'object',
                 properties: {
@@ -772,6 +814,24 @@ const swaggerSpec = {
                 responses: {
                     200: { description: 'Evolución temporal', content: { 'application/json': { schema: { $ref: '#/components/schemas/TrendsStats' } } } },
                     400: { description: 'Cantidad de meses inválida', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
+                    401: { description: 'Token faltante o inválido', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
+                    500: { description: 'Error interno del servidor', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
+                }
+            }
+        },
+        '/api/stats/budgets': {
+            get: {
+                tags: ['Stats'],
+                summary: 'Presupuestos vs gasto real',
+                description: 'Por cada presupuesto del período, cruza el límite con el gasto real de su categoría y devuelve cuánto resta, el porcentaje consumido y el estado (ok, alerta, excedido), más el agregado del mes.',
+                security: [{ bearerAuth: [] }],
+                parameters: [
+                    { name: 'mes', in: 'query', required: true, schema: { type: 'integer', minimum: 1, maximum: 12 }, description: 'Mes del período a evaluar' },
+                    { name: 'anio', in: 'query', required: true, schema: { type: 'integer', minimum: 2000 }, description: 'Año del período a evaluar' }
+                ],
+                responses: {
+                    200: { description: 'Resumen de presupuestos del período', content: { 'application/json': { schema: { $ref: '#/components/schemas/BudgetStats' } } } },
+                    400: { description: 'Parámetros de mes o año inválidos', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
                     401: { description: 'Token faltante o inválido', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
                     500: { description: 'Error interno del servidor', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } }
                 }

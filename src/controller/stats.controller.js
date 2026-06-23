@@ -33,3 +33,13 @@ export const obtenerTendencias = async (req, res, next) => {
         next(error)
     }
 }
+
+export const obtenerEstadisticasPresupuestos = async (req, res, next) => {
+    try {
+        const { mes, anio } = req.validated?.query ?? req.query
+        const estadisticas = await servicio.obtenerEstadisticasPresupuestos(req.user.id, mes, anio)
+        res.json(estadisticas)
+    } catch (error) {
+        next(error)
+    }
+}

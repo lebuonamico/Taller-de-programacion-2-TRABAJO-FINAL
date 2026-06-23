@@ -63,6 +63,9 @@ button:hover {
 .token-box.hidden {
     display: none;
 }
+.hidden {
+    display: none !important;
+}
 .token-label {
     font-weight: 700;
     color: #28316d;
@@ -139,3 +142,196 @@ a {
 .card:hover {
     background: #dde1ff;
 }
+
+/* ====== Layout ancho para recursos (tablas/listados) ====== */
+.container.wide {
+    max-width: 920px;
+}
+.page-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.page-header h1 {
+    text-align: left;
+    margin-bottom: 0;
+}
+.subtitle {
+    margin-top: 0.25rem;
+    color: #6b7280;
+}
+
+/* ====== Barra de token (sesión) ====== */
+.token-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.6rem;
+    align-items: center;
+    margin: 1.2rem 0;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #f0f3ff;
+    border: 1px solid #d5dcff;
+}
+.token-bar input {
+    background: #fff;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+.token-bar button {
+    padding: 0.85rem 1.1rem;
+    white-space: nowrap;
+}
+.token-status {
+    grid-column: 1 / -1;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.token-status.ok { color: #1d7a34; }
+.token-status.off { color: #b02222; }
+
+/* ====== Secciones / paneles ====== */
+.panel {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #eceef5;
+}
+.panel h2 {
+    font-size: 1.2rem;
+    margin: 0 0 0.75rem;
+}
+.form.inline {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    align-items: end;
+}
+.form.inline button {
+    height: fit-content;
+}
+.field {
+    display: grid;
+    gap: 0.35rem;
+}
+select {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid #d4d7dd;
+    border-radius: 10px;
+    background: #fafbff;
+    font-size: 1rem;
+}
+.btn-secondary {
+    background: #eef0ff;
+    color: #0a1b57;
+}
+.btn-secondary:hover {
+    background: #dde1ff;
+}
+
+/* ====== Tablas / listados ====== */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+.data-table th,
+.data-table td {
+    padding: 0.7rem 0.6rem;
+    text-align: left;
+    border-bottom: 1px solid #eceef5;
+}
+.data-table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #6b7280;
+}
+.data-table tbody tr:hover {
+    background: #f7f9ff;
+}
+.data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table .actions {
+    display: flex;
+    gap: 0.4rem;
+}
+.data-table .actions button {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.85rem;
+}
+.empty {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    color: #6b7280;
+    background: #f7f8fc;
+    border-radius: 10px;
+}
+
+/* ====== Chips / badges ====== */
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+.badge.ingreso { background: #eaf7ec; color: #1d7a34; }
+.badge.gasto { background: #fbeaea; color: #b02222; }
+.badge.estado-ok { background: #eaf7ec; color: #1d7a34; }
+.badge.estado-alerta { background: #fff4e5; color: #8a5200; }
+.badge.estado-excedido { background: #fbeaea; color: #b02222; }
+.bar-pct {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.78rem;
+    color: #6b7280;
+}
+
+.btn-danger { background: #e7484d; }
+.btn-danger:hover { background: #c2363b; }
+
+/* ====== Tarjetas de métricas (stats) ====== */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.stat-card {
+    padding: 1.1rem;
+    border-radius: 12px;
+    background: #f5f7ff;
+    border: 1px solid #e6eaff;
+}
+.stat-card .label {
+    font-size: 0.82rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+.stat-card .value {
+    font-size: clamp(1rem, 2.2vw, 1.4rem);
+    font-weight: 800;
+    margin-top: 0.3rem;
+    color: #1f2d70;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+.stat-card .value.pos { color: #1d7a34; }
+.stat-card .value.neg { color: #b02222; }
+
+/* ====== Barra de progreso (presupuestos) ====== */
+.bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #e6eaff;
+    overflow: hidden;
+    margin-top: 0.35rem;
+}
+.bar > span {
+    display: block;
+    height: 100%;
+    background: #4756ff;
+}
+.bar.over > span { background: #e7484d; }

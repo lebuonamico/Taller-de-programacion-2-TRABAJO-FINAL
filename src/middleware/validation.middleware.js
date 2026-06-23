@@ -95,6 +95,11 @@ const schemas = {
 
     trends: Joi.object({
         meses: Joi.number().integer().min(1).max(24)
+    }),
+
+    budgetStats: Joi.object({
+        mes: Joi.number().integer().min(1).max(12).required(),
+        anio: Joi.number().integer().min(2000).required()
     })
 }
 
