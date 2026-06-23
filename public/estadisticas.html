@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="container wide">
+        <div class="page-header">
+            <div>
+                <h1>Estadísticas</h1>
+                <p class="subtitle">Resumen mensual, gastos por categoría y tendencias.</p>
+            </div>
+            <a href="index.html">Volver al inicio</a>
+        </div>
+
+        <div class="token-bar">
+            <input type="text" id="tokenInput" placeholder="Pegá tu token de sesión">
+            <button type="button" id="saveTokenBtn">Guardar token</button>
+            <div id="tokenStatus" class="token-status off"></div>
+        </div>
+
+        <section class="panel">
+            <h2>Período</h2>
+            <form id="statsForm" class="form inline">
+                <div class="field">
+                    <label for="stMes">Mes</label>
+                    <input type="number" id="stMes" min="1" max="12" value="6" required>
+                </div>
+                <div class="field">
+                    <label for="stAnio">Año</label>
+                    <input type="number" id="stAnio" min="2000" value="2026" required>
+                </div>
+                <div class="field">
+                    <label for="stMeses">Meses de tendencia</label>
+                    <input type="number" id="stMeses" min="1" max="24" value="6">
+                </div>
+                <div class="footer-links">
+                    <button type="submit">Calcular</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Resumen mensual</h2>
+            <div id="statsResumen" class="stat-grid">
+                <div class="empty">Guardá tu token y elegí un período.</div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Gastos por categoría</h2>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Categoría</th><th class="num">Total</th><th class="num">Cantidad</th><th class="num">% del gasto</th></tr>
+                </thead>
+                <tbody id="statsCategoriasBody">
+                    <tr><td colspan="4" class="empty">Sin datos.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="panel">
+            <h2 id="tendenciaGeneral">Tendencias</h2>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Período</th><th class="num">Ingresos</th><th class="num">Gastos</th><th class="num">Balance</th><th class="num">Var. gastos</th></tr>
+                </thead>
+                <tbody id="statsTendenciasBody">
+                    <tr><td colspan="5" class="empty">Sin datos.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div id="message" class="message"></div>
+    </main>
+    <script src="js/finanzas.js"></script>
+</body>
+</html>

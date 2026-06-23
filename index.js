@@ -1,11 +1,20 @@
-import config from "./config.js"
-import CnxMongoDB from "./modelo/MongoDB.js"
-import Server from "./server.js"
+import dotenv from 'dotenv'
+import connectDB from './src/config/database.js'
+import createServer from './src/server.js'
+import config from './src/config/index.js'
 
+dotenv.config({ quiet: true })
 
-if(config.MODO_PERSISTENCIA == 'MONGODB') {
-    await CnxMongoDB.conectar()
+try {
+    await connectDB()
+
+    const app = createServer()
+    const server = app.listen(config.PORT, () =>
+        console.log(`Servidor ApiRestful escuchando en http://localhost:${config.PORT}`)
+    )
+
+    server.on('error', error => console.log(`Error en servidor ${error.message}`))
+} catch (error) {
+    console.error('Fallo al iniciar la aplicación:', error.message)
+    process.exit(1)
 }
-
-const server = new Server(config.PORT)
-server.start()
