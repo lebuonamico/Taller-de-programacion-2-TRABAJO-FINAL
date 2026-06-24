@@ -5,10 +5,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node --test",
+    "test": "npm run test-unitario && npm run test-integration",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test-unitario": "mocha src/test/estadisticas.test.js"
+    "test-unitario": "mocha src/test/estadisticas.test.js",
+    "test-integration": "node node_modules/mocha/bin/mocha.js --config .mocharc.integration.cjs"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "@apidevtools/swagger-parser": "^12.1.0",
     "chai": "^6.2.2",
     "mocha": "^11.7.6",
+    "mongodb-memory-server": "^10.1.4",
     "sinon": "^22.0.0"
   },
   "dependencies": {
