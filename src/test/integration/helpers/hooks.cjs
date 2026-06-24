@@ -1,0 +1,6 @@
+'use strict'
+process.env.JWT_SECRET = 'integration-test-secret'
+process.env.NODE_ENV = 'test'
+process.env.MAIL_HOST = ''
+process.env.MAIL_USER = ''
+process.env.MAIL_ETHEREAL = 'false'
