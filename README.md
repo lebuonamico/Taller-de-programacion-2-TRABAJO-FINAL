@@ -18,7 +18,7 @@ Aplicación de gestión de finanzas personales construida como **API REST** con 
 - **Manejo de errores centralizado** y respuesta 404 para rutas inexistentes.
 - **Documentación interactiva** con Swagger / OpenAPI.
 - **Frontend** en `public/` (HTML/CSS/JS) para interactuar con la API.
-- **Tests** con el test runner nativo de Node, `chai`, `sinon` y `mocha`
+- **Tests unitarios e integración** con Mocha, Chai, Sinon, Supertest y MongoDB en memoria.
 
 ---
 
@@ -33,7 +33,7 @@ Aplicación de gestión de finanzas personales construida como **API REST** con 
 | Validación       | Joi                                                     |
 | Email            | Nodemailer                                              |
 | Documentación    | swagger-jsdoc + swagger-ui-express                      |
-| Testing          | `node --test`, Mocha, Chai, Sinon, Supertest           |
+| Testing          | Mocha, Chai, Sinon, Supertest, mongodb-memory-server  |
 | Utilidades       | dotenv, axios                                           |
 
 ---
@@ -221,14 +221,19 @@ Authorization: Bearer <token>
 ## Testing
 
 ```bash
-# Ejecuta todos los tests con el runner nativo de Node
+# Ejecuta todos los tests: unitario + integración
 npm test
 
 # Ejecuta el test unitario de estadísticas con Mocha
 npm run test-unitario
+
+# Ejecuta el test de integración de login con Mocha
+npm run test-integration
 ```
 
-El test de estadísticas usa `sinon` para *stubbear* `Transaction.aggregate`, de modo que **no requiere una conexión real a MongoDB**.
+El test unitario de estadísticas usa `sinon` para *stubbear* `Transaction.aggregate`, de modo que **no requiere una conexión real a MongoDB**.
+
+El test de integración valida el flujo real de login contra la API Express usando `supertest` y una base temporal creada con `mongodb-memory-server`. Por eso tampoco toca la base real configurada en `STRCNX`.
 
 ---
 
@@ -244,8 +249,9 @@ El servidor sirve archivos desde `public/`. Las pantallas disponibles incluyen r
 | ---------------------- | --------------------------------------------------- |
 | `npm start`            | Inicia el servidor (`node index.js`)                |
 | `npm run dev`          | Inicia con recarga automática (`nodemon`)           |
-| `npm test`             | Ejecuta los tests con `node --test`                 |
+| `npm test`             | Ejecuta test unitario + test de integración         |
 | `npm run test-unitario`| Ejecuta el test de estadísticas con Mocha           |
+| `npm run test-integration` | Ejecuta el test de integración de login con Mocha |
 
 ---
 
