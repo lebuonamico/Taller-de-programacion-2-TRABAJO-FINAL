@@ -2,11 +2,13 @@ import dotenv from 'dotenv'
 import connectDB from './src/config/database.js'
 import createServer from './src/server.js'
 import config from './src/config/index.js'
+import seedDemoData from './src/seed/demoData.js'
 
 dotenv.config({ quiet: true })
 
 try {
     await connectDB()
+   // await seedDemoData()
 
     const app = createServer()
     const server = app.listen(config.PORT, () =>
