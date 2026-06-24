@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node --test",
+    "test": "npm run test-unitario && npm run test-integration",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test-unitario": "mocha src/test/estadisticas.test.js",
